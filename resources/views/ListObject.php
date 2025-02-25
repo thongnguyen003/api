@@ -60,7 +60,11 @@
                         <td> ${object.id}</td>
                         <td>${object.name}</td>
                         <td>${object.createdAt}</td>
-                        <td>${object.avatar} </td>
+                        <td> 
+                            <div style="width:20px;height:20px">
+                                <img src="${object.avatar}" alt="" style="with:100%;height:100%">
+                            </div>
+                        </td>
                         <td>
                             <a href="/UpdateProduct/ ${object.id}" class="btn btn-warning btn-sm">Sửa</a>
                             <form  style="display:inline;">
@@ -80,12 +84,10 @@
                         let comfi = await fetchData(path);
                         if (comfi && comfi.success) {
                             alert('Sản phẩm đã được xóa');
-                            // Hoặc sử dụng thư viện thông báo như Toastr
-                            // toastr.success('Sản phẩm đã được xóa');
                         } else {
                             alert('Lỗi khi xóa sản phẩm'+comfi.error);
-                            // toastr.error('Lỗi khi xóa sản phẩm');
                         }
+                        window.location.href = "/";
                     }
                 });
             });

@@ -46,9 +46,10 @@ class ObjectAPI extends Controller
      */
     public function show(string $id)
     {
+        $id = trim($id);
         $response = Http::withOptions([
             'verify' => 'c:\php\cacert-2024-12-31.pem', // Thay đường dẫn bằng đường dẫn chính xác đến tệp cacert.pem
-        ])->get($this->apiUrl."/".$id);
+        ])->get("$this->apiUrl/$id");
         if($response->successful()){
             return $response->json();
         }
@@ -60,13 +61,22 @@ class ObjectAPI extends Controller
      */
     public function edit(string $id)
     {
-        $response = Http::withOptions([
-            'verify' => 'c:\php\cacert-2024-12-31.pem', // Thay đường dẫn bằng đường dẫn chính xác đến tệp cacert.pem
-        ])->get($this->apiUrl."/".$id);
-        if($response->successful()){
-            return $response->json();
+        try {
+            $id = trim($id);
+            $response = Http::withOptions([
+                'verify' => 'c:\php\cacert-2024-12-31.pem', // Kiểm tra lại đường dẫn
+            ])->get("$this->apiUrl/$id");
+            $h="$this->apiUrl/$id";
+            if ($response->successful()) {
+                return response()->json($response->json());
+            } else {
+                // Kiểm tra mã trạng thái để biết chính xác lý do thất bại
+                return response()->json(['error' => "Không tìm thấy sản phẩm với ID: " . $h, 'status_code' => $response->status()]);
+            }
+        } catch (\Exception $e) {
+            // Đảm bảo có thể xử lý lỗi xảy ra, chẳng hạn nếu không thể kết nối đến API
+            return response()->json(['error' => 'Lỗi kết nối: ' . $e->getMessage()]);
         }
-        return response()->json(['error'=>"Không tìm thấy sản phẩm".$id]);
     }
 
     /**
@@ -74,6 +84,7 @@ class ObjectAPI extends Controller
      */
     public function update(StoreProductRequest $request, string $id)
     {
+        $id = trim($id);
         $response = Http::withOptions([
             'verify' => 'c:\php\cacert-2024-12-31.pem', // Thay đường dẫn bằng đường dẫn chính xác đến tệp cacert.pem
         ])->put($this->apiUrl."/".$id, $request->validated());
@@ -89,13 +100,14 @@ class ObjectAPI extends Controller
      */
     public function destroy(string $id)
     {
+        $id = trim($id);
         $response = Http::withOptions([
             'verify' => 'c:\php\cacert-2024-12-31.pem', // Thay đường dẫn bằng đường dẫn chính xác đến tệp cacert.pem
-        ])->delete($this->apiUrl."/".$id);
-        
+        ])->delete("$this->apiUrl/$id");
+        $h="$this->apiUrl/$id";
         if($response->successful()){
             return  response()->json(['success'=>'Sản phẩm đã được xóa']);;
         }
-        return response()->json(['error'=>'Lỗi khi xóa sản phẩm '.$id]);
+        return response()->json(['error'=>'Lỗi khi xóa sản phẩm '.$h]);
     }
 }
