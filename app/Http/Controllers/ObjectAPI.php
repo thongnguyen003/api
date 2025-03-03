@@ -14,7 +14,7 @@ class ObjectAPI extends Controller
     public function index()
     {
         $response= Http::withOptions([
-            'verify' => 'c:\php\cacert-2024-12-31.pem', // Thay đường dẫn bằng đường dẫn chính xác đến tệp cacert.pem
+            'verify' => 'c:\php\cacert-2024-12-31.pem',
         ])->get($this->apiUrl);
         return $response->json();
     }
@@ -33,7 +33,7 @@ class ObjectAPI extends Controller
     public function store(StoreProductRequest $request)
     {
         $response = Http::withOptions([
-            'verify' => 'c:\php\cacert-2024-12-31.pem', // Thay đường dẫn bằng đường dẫn chính xác đến tệp cacert.pem
+            'verify' => 'c:\php\cacert-2024-12-31.pem', 
         ])->post($this->apiUrl, $request->validated());
         if($response->successful()){
             return response()->json(['success'=>'Sản phẩm đã được tạo']);
@@ -48,7 +48,7 @@ class ObjectAPI extends Controller
     {
         $id = trim($id);
         $response = Http::withOptions([
-            'verify' => 'c:\php\cacert-2024-12-31.pem', // Thay đường dẫn bằng đường dẫn chính xác đến tệp cacert.pem
+            'verify' => 'c:\php\cacert-2024-12-31.pem', 
         ])->get("$this->apiUrl/$id");
         if($response->successful()){
             return $response->json();
@@ -64,7 +64,7 @@ class ObjectAPI extends Controller
         try {
             $id = trim($id);
             $response = Http::withOptions([
-                'verify' => 'c:\php\cacert-2024-12-31.pem', // Kiểm tra lại đường dẫn
+                'verify' => 'c:\php\cacert-2024-12-31.pem',
             ])->get("$this->apiUrl/$id");
             $h="$this->apiUrl/$id";
             if ($response->successful()) {
@@ -102,7 +102,7 @@ class ObjectAPI extends Controller
     {
         $id = trim($id);
         $response = Http::withOptions([
-            'verify' => 'c:\php\cacert-2024-12-31.pem', // Thay đường dẫn bằng đường dẫn chính xác đến tệp cacert.pem
+            'verify' => 'c:\php\cacert-2024-12-31.pem', 
         ])->delete("$this->apiUrl/$id");
         $h="$this->apiUrl/$id";
         if($response->successful()){
